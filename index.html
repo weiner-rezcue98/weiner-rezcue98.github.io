@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página e-SIC</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .modal-body a {
+  display: block;
+  margin: 10px 0;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.modal-body a:hover {
+  text-decoration: underline;
+}
+
+#menuModal .modal-header .modal-title {
+  color: #000 !important;
+  background-color: #fff !important;
+}
+
+  </style>
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <div class="header">
+
+        <!-- Botões de Home e Menu -->
+        <div class="menu-icons">
+            <img style="margin-right: 10px;" src="icons/home.png" alt="Home" data-bs-toggle="tooltip" data-bs-placement="top" title="Home">
+            <img src="icons/hamburger.png" alt="Menu" data-bs-toggle="modal" data-bs-target="#menuModal" data-bs-placement="top" title="Menu">
+          </div>
+    <!-- Menu de acessibilidade -->
+    <div class="accessibility">
+        <p style="font-size: 11px;">Acessbilidade</p><hr>
+        <img src="icons/contrast.png" alt="Contraste" data-bs-toggle="tooltip" data-bs-placement="top" title="Alternar contraste" onclick="toggleContrast()">
+        <img src="icons/text.png" alt="Aumentar texto" data-bs-toggle="tooltip" data-bs-placement="top" title="Aumentar texto" onclick="increaseFontSize()">
+        <img style="width: 15px; margin-left: -10px;" src="icons/text.png" data-bs-toggle="tooltip" data-bs-placement="top" alt="Reduzir texto" title="Reduzir texto" onclick="decreaseFontSize()">
+    </div>
+  </div>
+
+<!-- Modal para o Menu -->
+<div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="menuModalLabel" style="color: #000; background-color: #fff;">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Barra de pesquisa -->
+        <div class="menu-search-bar mb-3">
+          <input type="text" id="menuSearch" class="form-control" placeholder="Buscar no menu..." oninput="filterMenu()">
+        </div>
+        <!-- Links do menu -->
+        <div id="menu" style="color: #000; background-color: #fff;">
+          <center>
+            <a href="#" onclick="openIframe('api/secretarias.php', 'Acesso às Secretarias')" class="menu-link">Acesso às Secretarias</a>
+            <a href="#" class="menu-link">Benefícios Fiscais</a>
+            <a href="#" class="menu-link">Carta de Serviços ao Cidadão</a>
+            <a href="#" class="menu-link">Acompanhamento do Orçamento (Saldos)</a>
+            <a href="#" class="menu-link">API de Dados</a>
+            <a href="#" class="menu-link">Ações Coronavírus</a>
+
+            <a href="#" class="menu-link">Compras (Inexigibilidade e Dispensa de Licitação)</a>
+            <a href="#" class="menu-link">Chamamento Público</a>
+            <a href="#" class="menu-link">Concursos e Editais</a>
+            <a href="#" class="menu-link">Conselhos Municipais</a>
+            <a href="#" class="menu-link">Contratos</a>
+            <a href="#" class="menu-link">Despesas, Subvenções, Ordem Cronológica, Execução Orçamentária e Financeira</a>
+
+            <a href="#" class="menu-link">Diárias e Passagens</a>
+            <a href="#" class="menu-link">Diário/Boletim Oficial do Município</a>
+            <a href="#" class="menu-link">Educação</a>
+            <a href="#" class="menu-link">Estrutura Organizacional</a>
+            <a href="#" class="menu-link">Execução Orçamentária Consolidada</a>
+            <a href="#" class="menu-link">Fale Conosco</a>
+          </center>          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+ <!-- Container do iframe -->
+ <div id="iframeContainer" style="display: none; margin-top: 20px; border: 1px solid #ccc; padding: 10px;">
+    <button onclick="closeIframe()" style="float: right; padding: 5px 10px; background: rgba(255, 0, 0, 0.616); color: white; border: none; cursor: pointer;">
+      Fechar
+    </button>
+    <h2 id="iframeTitle" style="color: black; font-size: 18px; margin-bottom: 10px;">
+      <!-- O título será atualizado dinamicamente -->
+    </h2>
+    <iframe id="contentIframe" src="" frameborder="0" style="width: 100%; height: 500px; border: 1px solid #ccc;"></iframe>
+  </div>
+  
+ 
+
+<!-- Barra de Pesquisa -->
+<div class="container mt-4">
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Digite o que deseja buscar...">
+    <button onclick="searchSite()">
+      <i class="fas fa-search"></i> <!-- Ícone de lupa do Font Awesome -->
+    </button>
+  </div>
+</div>
+
+<!-- Grade de Ícones -->
+<div class="container icon-grid">
+  <div class="row">
+    <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Ferramenta de Pesquisa (Busca)">
+      <a href="#" id="focusSearch">
+        <img src="icons/675.png" alt="Pesquisa">
+        <p>Ferramenta de Pesquisa (Busca)</p>
+      </a>
+    </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Acesso às Secretarias">
+        <a href="#" onclick="openIframe('api/secretarias.php', 'Acesso às Secretarias')">
+          <img src="icons/64.png" alt="Secretarias">
+          <p>Acesso às Secretarias</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Benefícios Fiscais">
+        <a href="#" onclick="openIframe('api/beneficios_fiscais.php', 'Benefícios Fiscais')">
+          <img src="icons/45535460-EDE2-4667-9963-09C608328BA5.png" alt="Benefícios Fiscais">
+          <p>Benefícios Fiscais</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Carta de Serviços ao Cidadão">
+        <a href="#" onclick="openIframe('api/carta_de_servicos_ao_cidadao.php', 'Carta de Serviços ao Cidadão')">
+          <img src="icons/carta.png" alt="Carta de Serviços">
+          <p>Carta de Serviços ao Cidadão</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Acompanhamento do Orçamento (Saldos)">
+        <a href="#" onclick="openIframe('api/acompanhamento_do_orcamento.php', 'Acompanhamento do Orçamento (Saldos)')">
+          <img src="icons/db.png" alt="Acompanhamento do Orçamento (Saldos)">
+          <p>Acompanhamento do Orçamento (Saldos)</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="API de Dados">
+        <a href="#" onclick="openIframe('api/api_de_dados.php', 'API de Dados')">
+          <img src="icons/API.png" alt="API de Dados">
+          <p>API de Dados</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Ações Coronavírus">
+        <a href="#" onclick="openIframe('api/covid19.php', 'Ações Coronavírus')">
+          <img src="icons/corona.png" alt="Ações Coronavírus">
+          <p>Ações Coronavírus</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Compras (Inexigibilidade e Dispensa de Licitação)">
+        <a href="#" onclick="openIframe('api/compras_inexigibilidade_dispensa.php', 'Compras (Inexigibilidade e Dispensa de Licitação)')">
+          <img src="icons/compras.png" alt="Compras (Inexigibilidade e Dispensa de Licitação)">
+          <p>Compras (Inexigibilidade e Dispensa de Licitação)</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Chamamento Público">
+        <a href="#">
+          <img src="icons/chamamento.png" alt="Chamamento Público">
+          <p>Chamamento Público</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Concursos e Editais">
+        <a href="#">
+          <img src="icons/editais.png" alt="Concursos e Editais">
+          <p>Concursos e Editais</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Conselhos Municipais">
+        <a href="#">
+          <img src="icons/conselhomuni.png" alt="Conselhos Municipais">
+          <p>Conselhos Municipais</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Contratos">
+        <a href="#">
+          <img src="icons/contratos.png" alt="Contratos">
+          <p>Contratos</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Despesas, Subvenções, Ordem Cronológica, Execução Orçamentária e Financeira">
+        <a href="#">
+          <img src="icons/123.png" alt="Despesas, Subvenções, Ordem Cronológica, Execução Orçamentária e Financeira">
+          <p>Despesas, Subvenções, Ordem Cronológica, Execução Orçamentária e Financeira</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Diárias e Passagens">
+        <a href="#">
+          <img src="icons/passagens.png" alt="Diárias e Passagens">
+          <p>Diárias e Passagens</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Diário/Boletim Oficial do Município">
+        <a href="#">
+          <img src="icons/passagens.png" alt="Diário/Boletim Oficial do Município">
+          <p>Diário/Boletim Oficial do Município</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Educação">
+        <a href="#">
+          <img src="icons/educacao.png" alt="Educação">
+          <p>Educação</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Estrutura Organizacional">
+        <a href="#">
+          <img src="icons/estrutura.png" alt="Estrutura Organizacional">
+          <p>Estrutura Organizacional</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Execução Orçamentária Consolidada">
+        <a href="#">
+          <img src="icons/ExecucaoOrcamentariaConsolidada.png" alt="Execução Orçamentária Consolidada">
+          <p>Execução Orçamentária Consolidada</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Fale Conosco">
+        <a href="#">
+          <img src="icons/faleconosco.png" alt="Fale Conosco">
+          <p>Fale Conosco</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Folha de Pagamento (Salário dos Servidores)">
+        <a href="#">
+          <img src="icons/folhadepagamento.png" alt="Folha de Pagamento (Salário dos Servidores)">
+          <p>Folha de Pagamento (Salário dos Servidores)</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Formulários para solicitações no SIC Físico">
+        <a href="#">
+          <img src="icons/formularios.png" alt="Formulários para solicitações no SIC Físico">
+          <p>Formulários para solicitações no SIC Físico</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Fundo de Previdência">
+        <a href="#">
+          <img src="icons/fundodeprevidencia.png" alt="Fundo de Previdência">
+          <p>Fundo de Previdência</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Glossário">
+        <a href="#">
+          <img src="icons/glossario.png" alt="Glossário">
+          <p>Glossário</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Gráficos Estatísticos (Pedidos de Informação)">
+        <a href="#">
+          <img src="icons/graficos.png" alt="Gráficos Estatísticos (Pedidos de Informação)">
+          <p>Gráficos Estatísticos (Pedidos de Informação)</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Histórico de Acesso do Usuário">
+        <a href="#">
+          <img src="icons/historicoacesso.png" alt="Histórico de Acesso do Usuário">
+          <p>Histórico de Acesso do Usuário</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Índice de Efetividade da Gestão Municipal Fonte TCE MG">
+        <a href="#">
+          <img src="icons/IEGM.png" alt="Índice de Efetividade da Gestão Municipal Fonte TCE MG">
+          <p>Índice de Efetividade da Gestão Municipal Fonte TCE MG</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Índice de Transparência e Acesso à Informação (ITAI) Fonte TCE MG">
+        <a href="#">
+          <img src="icons/indicadordetransparencia.png" alt="Índice de Transparência e Acesso à Informação (ITAI) Fonte TCE MG">
+          <p>Índice de Transparência e Acesso à Informação (ITAI) Fonte TCE MG</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Lei de Proteção de Dados (LGPD)">
+        <a href="#">
+          <img src="icons/lgpd.png" alt="Lei de Proteção de Dados (LGPD)">
+          <p>Lei de Proteção de Dados (LGPD)</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Lei de Responsabilidade Fiscal">
+        <a href="#">
+          <img src="icons/leifiscal.png" alt="Lei de Responsabilidade Fiscal">
+          <p>Lei de Responsabilidade Fiscal</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Leis de Incentivo a Cultura">
+        <a href="#">
+          <img src="icons/cultura.png" alt="Leis de Incentivo a Cultura">
+          <p>Leis de Incentivo a Cultura</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Leis, Decretos e Portarias">
+        <a href="#">
+          <img src="icons/leisedecretos.png" alt="Leis, Decretos e Portarias">
+          <p>Leis, Decretos e Portarias</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Licenças Ambientais Expedidas">
+        <a href="#">
+          <img src="icons/leisedecretos.png" alt="Licenças Ambientais Expedidas">
+          <p>Licenças Ambientais Expedidas</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Licitações">
+        <a href="#">
+          <img src="icons/licitacoes.png" alt="Licitações">
+          <p>Licitações</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Mapa do Site">
+        <a href="#">
+          <img src="icons/mapa.png" alt="Mapa do Site">
+          <p>Mapa do Site</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Multas de Trânsito">
+        <a href="#">
+          <img src="icons/multas.png" alt="Multas de Trânsito">
+          <p>Multas de Trânsito</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Obras">
+        <a href="#">
+          <img src="icons/obras.png" alt="Obras">
+          <p>Obras</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Orçamentos (LOA, LDO e PPA)">
+        <a href="#">
+          <img src="icons/orcamentos.png" alt="Orçamentos (LOA, LDO e PPA)">
+          <p>Orçamentos (LOA, LDO e PPA)</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Perguntas e Respostas">
+        <a href="#">
+          <img src="icons/perguntaserespostas.png" alt="Perguntas e Respostas">
+          <p>Perguntas e Respostas</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Plano Municipal">
+        <a href="#">
+          <img src="icons/planomunicipal.png" alt="Plano Municipal">
+          <p>Plano Municipal</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Política de Privacidade">
+        <a href="#">
+          <img src="icons/politicadeprivacidade.png" alt="Política de Privacidade">
+          <p>Política de Privacidade</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Prestação de Contas">
+        <a href="#">
+          <img src="icons/prestacaodecontas.png" alt="Prestação de Contas">
+          <p>Prestação de Contas</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Prestação de Contas TCE">
+        <a href="#">
+          <img src="icons/prestacaodecontastce.png" alt="Prestação de Contas TCE">
+          <p>Prestação de Contas TCE</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Programas, Projetos e Ações">
+        <a href="#">
+          <img src="icons/programasprojetosacoes.png" alt="Programas, Projetos e Ações">
+          <p>Programas, Projetos e Ações</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Quantitativo de visitas do Portal da Transparência">
+        <a href="#">
+          <img src="icons/quantitativo.png" alt="Quantitativo de visitas do Portal da Transparência">
+          <p>Quantitativo de visitas do Portal da Transparência</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Radar da Transparência Pública">
+        <a href="#">
+          <img src="icons/radar.png" alt="Radar da Transparência Pública">
+          <p>Radar da Transparência Pública</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Receitas">
+        <a href="#">
+          <img src="icons/receitas.png" alt="Receitas">
+          <p>Receitas</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Regulamentação da LAI pelo Poder Executivo">
+        <a href="#">
+          <img src="icons/regulamentacao.png" alt="Regulamentação da LAI pelo Poder Executivo">
+          <p>Regulamentação da LAI pelo Poder Executivo</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Repasses/Transferências">
+        <a href="#">
+          <img src="icons/repassestransferencia.png" alt="Repasses/Transferências">
+          <p>Repasses/Transferências</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Saúde">
+        <a href="#">
+          <img src="icons/saude.png" alt="Saúde">
+          <p>Saúde</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Sistema de Informação ao Cidadão e-SIC">
+        <a href="#">
+          <img src="icons/esic.png" alt="Sistema de Informação ao Cidadão e-SIC">
+          <p>Sistema de Informação ao Cidadão e-SIC</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Termo de Parceria">
+        <a href="#">
+          <img src="icons/parceria.png" alt="Termo de Parceria">
+          <p>Termo de Parceria</p>
+        </a>
+      </div>
+      <div class="col-md-3 col-6 icon-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Termo de Permissão de Uso">
+        <a href="#">
+          <img src="icons/termodepermissao.png" alt="Termo de Permissão de Uso">
+          <p>Termo de Permissão de Uso</p>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+
+
+  <!-- vLibras com Script Acoplada -->
+
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
+
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+  <script src="assets/script1.js"></script>
+  <script src="assets/script2.js"></script>
+  <script src="assets/script3.js"></script>
+  <script src="assets/script4.js"></script>
+  <script src="assets/script5.js"></script>
+  <script src="assets/script6.js"></script>
+  <script>
+    function filterMenu() {
+  const input = document.getElementById('menuSearch').value.toLowerCase();
+  const items = document.querySelectorAll('#menuItems a');
+  items.forEach(item => {
+    if (item.textContent.toLowerCase().includes(input)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+  </script>
+
+<script>
+  function filterMenu() {
+    // Captura o valor digitado
+    const query = document.getElementById('menuSearch').value.toLowerCase();
+    const links = document.querySelectorAll('#menu a');
+
+    // Itera pelos links e exibe apenas os que correspondem à busca
+    links.forEach(link => {
+      if (link.textContent.toLowerCase().includes(query)) {
+        link.style.display = '';
+      } else {
+        link.style.display = 'none';
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,378 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+
+    margin-top: 60px;
+  }
+
+    /* Estilos para contraste */
+      body.high-contrast {
+          background-color: #000000b0;
+          color: #fff;
+      }
+
+      /* Estilos para tamanho da fonte */
+      body.small-font {
+          font-size: 12px;
+      }
+
+      body.large-font {
+          font-size: 18px;
+      }
+
+        /* Garantir que outros textos específicos fiquem brancos */
+          body.high-contrast a,
+          body.high-contrast p,
+          body.high-contrast h1, h2, h3, h4, h5, h6 {
+              color: #fff !important; /* Forçar cor branca em todos os textos */
+          }
+
+           /* Ajuste para o header no modo de alto contraste */
+body.high-contrast .header {
+  background-color: #222; /* Fundo mais escuro para o header */
+  border-bottom: 1px solid #444; /* Linha de separação sutil */
+}
+
+body.high-contrast .header img {
+  filter: invert(1); /* Inverter cores dos ícones para visibilidade */
+}
+
+body.high-contrast .accessibility img,
+body.high-contrast .menu-icons img {
+  filter: invert(1); /* Garantir que os ícones fiquem visíveis */
+}
+
+ /* Estilo da barra de pesquisa no modo de alto contraste */
+ body.high-contrast .search-bar {
+  background-color: #333; /* Fundo escuro */
+  border: 1px solid #555; /* Borda diferenciada */
+}
+
+body.high-contrast .search-bar input {
+  background-color: #0000007a; /* Fundo preto */
+  color: #fff; /* Texto branco */
+  border: 1px solid #555; /* Borda escura */
+}
+
+body.high-contrast .search-bar input::placeholder {
+  color: #888; /* Placeholder mais visível */
+}
+
+body.high-contrast .search-bar button {
+  background-color: #444; /* Fundo do botão mais escuro */
+  color: #fff; /* Texto branco */
+}
+
+body.high-contrast .search-bar button:hover {
+  background-color: #666; /* Botão em hover no modo de contraste */
+}
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+z-index: 1000; /* Para garantir que o cabeçalho fique acima dos outros elementos */
+
+  }
+
+  .header .accessibility {
+    display: flex;
+    align-items: center;
+  }
+
+  .header .accessibility img {
+    width: 25px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  .header .menu-icons {
+    display: flex;
+    align-items: center;
+  }
+
+  .header .menu-icons img {
+    width: 30px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .header .accessibility a {
+    margin-right: 15px;
+    text-decoration: none;
+    color: #333;
+  }
+
+  /* Estilo para o botão Home */
+  .home-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+  }
+
+  /* Estilo para o botão do menu hambúrguer */
+  .hamburger-menu {
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: #333;
+  }
+
+  /* Menu de navegação */
+  .menu {
+width: 100%;
+background-color: rgba(0, 0, 0, 0.8);
+color: white;
+display: none; /* Oculto inicialmente */
+flex-direction: column;
+align-items: center;
+justify-content: flex-start;
+padding: 20px;
+z-index: 1000;
+position: relative; /* Permitir que role com o site */
+}
+
+/* Barra de pesquisa no menu */
+.menu-search-bar {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+}
+
+
+
+.menu-search-bar input {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #333;
+  color: white;
+}
+
+.menu-link {
+  display: block; /* Faz com que cada link ocupe sua própria linha */
+  margin-bottom: 5px; /* Ajusta o espaçamento entre os links */
+}
+
+.menu-search-bar input::placeholder {
+  color: #bbb;
+}
+
+/* Links do menu */
+#menuItems a {
+  display: block;
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  margin: 10px 0;
+  transition: color 0.3s;
+}
+
+#menuItems a:hover {
+  color: #5a9bd4;
+}
+
+ /* Ícone de fechar */
+ .close-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 30px;
+  cursor: pointer;
+}
+
+.menu a {
+color: white;
+text-decoration: none;
+font-size: 24px;
+margin: 15px 0;
+}
+
+
+#iframeContainer {
+  display: none; /* Inicialmente escondido */
+  margin-top: 20px;
+}
+iframe {
+  width: 100%;
+  height: 400px;
+  border: none;
+}
+
+#iframeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+}
+#iframeHeader h2 {
+  margin: 0;
+  font-size: 18px;
+  color: black;
+}
+
+#iframeTitle {
+color: black !important;
+font-size: 18px;
+margin-left: 30PX;
+margin-bottom: 10px;
+}
+
+.high-contrast #iframeTitle {
+color: white !important;
+}
+
+
+
+
+  .menu button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #5a9bd4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  /* Responsividade: Mostrar o menu hambúrguer em telas pequenas */
+  @media (max-width: 767px) {
+    .hamburger-menu {
+      display: block;
+    }
+  }
+
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+  }
+
+  .search-bar input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .search-bar button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    background-color: #5a9bd4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .search-bar button:hover {
+    background-color: #3a7bbf;
+  }
+
+  .icon-grid {
+    margin-top: 50px;
+  }
+
+  .icon-item {
+    text-align: center;
+    margin: 15px 0;
+    position: relative;
+  }
+
+  .icon-item img {
+    width: 60px;
+    height: 60px;
+    transition: transform 0.3s;
+  }
+
+  .icon-item p {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+  }
+
+   /* Remover sublinhado de links */
+.icon-item a {
+  text-decoration: none; /* Remove o sublinhado */
+  color: inherit; /* Mantém a cor do texto original */
+}
+
+/* Caso queira ajustar o estilo do texto ao passar o mouse */
+.icon-item a:hover p {
+  color: #5a9bd4; /* Exemplo de cor ao passar o mouse */
+}
+
+  /* Animação de círculo */
+  .icon-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 80px;
+    border: 3px solid transparent;
+    border-top: 3px solid #5a9bd4;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.3s;
+    animation: none;
+  }
+
+  .icon-item:hover img {
+    transform: scale(1.1);
+  }
+
+  .icon-item:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+    animation: spin 1s linear infinite;
+  }
+
+/* Animação de rotação */
+@keyframes spin {
+from {
+  transform: translate(-50%, -85%) scale(1) rotate(0deg); /* Levantando um pouco mais para cima */
+}
+to {
+  transform: translate(-50%, -85%) scale(1) rotate(360deg); /* Levantando um pouco mais para cima */
+}
+}
+
+
+  /* Responsividade */
+  .icon-grid .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Para o modo mobile (menor que 768px), 2 ícones por linha */
+  @media (max-width: 767px) {
+    .icon-item {
+      flex: 1 0 48%; /* 2 ícones por linha */
+    }
+  }
+
+  /* Para o modo desktop (acima de 768px), 4 ícones por linha */
+  @media (min-width: 768px) {
+    .icon-item {
+      flex: 1 0 22%; /* 4 ícones por linha */
+    }
+  }
